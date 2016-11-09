@@ -46,10 +46,10 @@ else if (cmd === 'create') {
       kind: process.argv[4],
       name: process.argv[5],
     };
-    console.log(pet);
-    console.log(process.argv.length);
+    //console.log(pet);
+    //console.log(process.argv.length);
 
-    if (process.argv.length < 5) {
+    if (process.argv.length < 6) {
       console.error(`Usage: ${node} ${file} ${cmd} AGE KIND NAME`);
       process.exit(1);
     }
@@ -62,8 +62,7 @@ else if (cmd === 'create') {
       if (writeErr) {
         throw writeErr;
       }
-
-      console.log(pet);
+      console.log(JSON.stringify(pet));
     });
   });
 }
