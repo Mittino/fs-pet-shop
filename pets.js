@@ -5,7 +5,7 @@ var path = require('path');
 var petsPath = path.join(__dirname, 'pets.json');
 
 var node = path.basename(process.argv[0]);
-console.log(process.argv);
+//console.log(process.argv);
 var file = path.basename(process.argv[1]);
 var cmd = process.argv[2];
 
@@ -23,11 +23,14 @@ if (cmd === 'read') {
     if (index !== undefined){
       console.log(pets[index]);
     }
-    if (index > pets.length || index < 0){
+    if (index === undefined){
+      console.log(pets);
+    }
+    else if (index > pets.length || pets.length > 3){
         console.error(`Usage: ${node} ${file} read INDEX`);
         process.exit(1);
       }
-    console.log(pets);
+
   });
 }
 else if (cmd === 'create') {
@@ -65,6 +68,6 @@ else if (cmd === 'create') {
   });
 }
 else {
-  console.error(`Usage: ${node} ${file} [read | create]`);
+  console.error(`Usage: ${node} ${file} [read | create | update | destroy]`);
   process.exit(1);
 }
