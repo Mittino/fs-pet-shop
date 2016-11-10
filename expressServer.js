@@ -1,7 +1,11 @@
 "use strict";
 
 var express = require('express');
+var bodyParser = require("body-parser");
 var app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 var fs = require('fs');
 var path = require('path');
@@ -37,6 +41,14 @@ app.get("/pets/-1", function(req, res){
   fs.readFile(petsPath, 'utf8', function() {
     res.sendStatus(404);
   });
+});
+
+app.post("/pets", function(req, res){
+  var name=req.body.name;
+  var age=req.body.age;
+  var type=req.body.type;
+  console.log(name, age, type);
+  res.send(req.body);
 });
 
 app.listen('3000', function(){
