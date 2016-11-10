@@ -8,7 +8,8 @@ var node = path.basename(process.argv[0]);
 //console.log(process.argv);
 var file = path.basename(process.argv[1]);
 var cmd = process.argv[2];
-
+console.log(petsPath);
+console.log(process.argv);
 
 if (cmd === 'read') {
   fs.readFile(petsPath, 'utf8', function(err, data) {
