@@ -9,11 +9,28 @@ var petsPath = path.join(__dirname, 'pets.json');
 console.log(petsPath);
 
 app.get("/pets", function(req, res){
-
   fs.readFile(petsPath, 'utf8', function(err, data) {
     var pets = JSON.parse(data);
     res.send(pets);
   });
+});
+app.get("/pets/0", function(req, res){
+  fs.readFile(petsPath, 'utf8', function(err, data) {
+    var pets = JSON.parse(data);
+    res.send(pets[0]);
+  });
+});
+app.get("/pets/1", function(req, res){
+  fs.readFile(petsPath, 'utf8', function(err, data) {
+    var pets = JSON.parse(data);
+    res.send(pets[1]);
+  });
+});
+app.get("/pets/2", function(req, res){
+  res.status(404).send("Not Found");
+});
+app.get("/pets/-1", function(req, res){
+  res.status(404).send("Not Found");
 });
 
 app.listen('3000', function(){
