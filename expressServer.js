@@ -29,18 +29,18 @@ app.get("/pets/1", function(req, res){
 
 app.get("/pets/2", function(req, res){
   fs.readFile(petsPath, 'utf8', function() {
-    res.status(404).send("Not Found");
+    res.sendStatus(404);
   });
 });
 
 app.get("/pets/-1", function(req, res){
   fs.readFile(petsPath, 'utf8', function() {
-    res.status(404).send("Not Found");
+    res.sendStatus(404);
   });
 });
 
 app.listen('3000', function(){
-  console.log('listening on port 3000');
+  //console.log('listening on port 3000');
 });
 
 module.exports = app;
