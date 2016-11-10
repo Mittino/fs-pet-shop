@@ -26,14 +26,21 @@ app.get("/pets/1", function(req, res){
     res.send(pets[1]);
   });
 });
+
 app.get("/pets/2", function(req, res){
-  res.status(404).send("Not Found");
+  fs.readFile(petsPath, 'utf8', function() {
+    res.status(404).send("Not Found");
+  });
 });
+
 app.get("/pets/-1", function(req, res){
-  res.status(404).send("Not Found");
+  fs.readFile(petsPath, 'utf8', function() {
+    res.status(404).send("Not Found");
+  });
 });
 
 app.listen('3000', function(){
   console.log('listening on port 3000');
-  //console.log(petsPath);
 });
+
+module.exports = app;

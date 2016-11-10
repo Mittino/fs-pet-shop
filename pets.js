@@ -8,8 +8,8 @@ var node = path.basename(process.argv[0]);
 //console.log(process.argv);
 var file = path.basename(process.argv[1]);
 var cmd = process.argv[2];
-console.log(petsPath);
-console.log(process.argv);
+//console.log(petsPath);
+//console.log(process.argv);
 
 if (cmd === 'read') {
   fs.readFile(petsPath, 'utf8', function(err, data) {
@@ -21,9 +21,7 @@ if (cmd === 'read') {
     var index = process.argv[3];
     var pets = JSON.parse(data);
 
-    if (index !== undefined){
-      console.log(pets[index]);
-    }
+
     if (index === undefined){
       console.log(pets);
     }
@@ -31,6 +29,9 @@ if (cmd === 'read') {
         console.error(`Usage: ${node} ${file} read INDEX`);
         process.exit(1);
       }
+    else if (index !== undefined){
+      console.log(pets[index]);
+    }
 
   });
 }
