@@ -63,7 +63,7 @@ app.put("/pets/:index", function(req, res){
     var kind=req.body.kind;
     var index = Number.parseInt(req.params.index);
 
-    if (Number.isNaN(age) || name === undefined || kind === undefined || age === undefined){
+    if (!index || Number.isNaN(age) || name === undefined || kind === undefined || age === undefined){
       return res.sendStatus(400);
     }
 
@@ -80,11 +80,27 @@ app.put("/pets/:index", function(req, res){
     });
     res.send(req.body);
 });
+app.delete("/pets/:index", function(req, res){
 
+    var index = Number.parseInt(req.params.index);
 
+    if (!index){
+      return res.sendStatus(400);
+    }
 
+    fs.readFile(petsPath, 'utf8', function(err, data) {
+      var pets = JSON.parse(data);
+      var removedPet = pets.splice(index, 1)[0];
+      var petsJSON = JSON.stringify(pets);
 
-
+      fs.writeFile(petsPath, petsJSON, function(writeErr){
+        if (writeErr) {
+          throw writeErr;
+        }
+        res.send(removedPet);
+      });
+    });
+});
 
 app.listen('3000', function(){
   console.log('listening on port 3000');
