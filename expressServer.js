@@ -3,9 +3,12 @@
 var express = require('express');
 var bodyParser = require("body-parser");
 var app = express();
+var morgan = require("morgan");
 
-app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(morgan('short'));
+
 
 var fs = require('fs');
 var path = require('path');
@@ -39,6 +42,7 @@ app.post("/pets", function(req, res){
     if (Number.isNaN(age) || name === undefined || kind === undefined || age === undefined){
       return res.sendStatus(400);
     }
+
     fs.readFile(petsPath, 'utf8', function(err, data) {
       var pets = JSON.parse(data);
       pets.push(req.body);
@@ -52,6 +56,35 @@ app.post("/pets", function(req, res){
     });
     res.send(req.body);
 });
+
+app.put("/pets/:index", function(req, res){
+    var name=req.body.name;
+    var age=Number.parseInt(req.body.age);
+    var kind=req.body.kind;
+    var index = Number.parseInt(req.params.index);
+
+    if (Number.isNaN(age) || name === undefined || kind === undefined || age === undefined){
+      return res.sendStatus(400);
+    }
+
+    fs.readFile(petsPath, 'utf8', function(err, data) {
+      var pets = JSON.parse(data);
+      pets[index]=req.body;
+      var petsJSON = JSON.stringify(pets);
+
+      fs.writeFile(petsPath, petsJSON, function(writeErr){
+        if (writeErr) {
+          throw writeErr;
+        }
+      });
+    });
+    res.send(req.body);
+});
+
+
+
+
+
 
 app.listen('3000', function(){
   console.log('listening on port 3000');
