@@ -9,6 +9,11 @@ var morgan = require("morgan");
 app.use(bodyParser.json());
 app.use(morgan('short'));
 
+// app.use(function (req, res, next) {
+//   console.log(req.url);
+//   next();
+// });
+
 
 var fs = require('fs');
 var path = require('path');
@@ -52,9 +57,9 @@ app.post("/pets", function(req, res){
         if (writeErr) {
           throw writeErr;
         }
+        res.send(req.body);
       });
     });
-    res.send(req.body);
 });
 
 app.put("/pets/:index", function(req, res){
@@ -80,8 +85,41 @@ app.put("/pets/:index", function(req, res){
     });
     res.send(req.body);
 });
-app.delete("/pets/:index", function(req, res){
 
+app.patch("/pets/:index", function(req, res){
+
+    var body=req.body;
+    var index = Number.parseInt(req.params.index);
+
+    if (!body.name && !body.age && !body.kind){
+      return res.sendStatus(404);
+    }
+
+    fs.readFile(petsPath, 'utf8', function(err, data) {
+      var pets = JSON.parse(data);
+      var obj = pets[index];
+
+      if (index > (pets.length - 1) || index < 0 || Number.isNaN(index)){
+        return res.sendStatus(404);
+      } else if(isNaN(body.age)){
+        return res.sendStatus(404);
+      }
+
+      pets[index] = Object.assign(obj, body);
+
+      var petsJSON = JSON.stringify(pets);
+
+      fs.writeFile(petsPath, petsJSON, function(writeErr){
+        if (writeErr) {
+          throw writeErr;
+        }
+        console.log(pets[index]);
+        res.send(pets[index]);
+      });
+    });
+ });
+
+app.delete("/pets/:index", function(req, res){
     var index = Number.parseInt(req.params.index);
 
     if (!index){
@@ -102,8 +140,8 @@ app.delete("/pets/:index", function(req, res){
     });
 });
 
-app.listen('3000', function(){
-  console.log('listening on port 3000');
+app.listen('8080', function(){
+  console.log('listening on port 8080');
 });
 
 module.exports = app;
