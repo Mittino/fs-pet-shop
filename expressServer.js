@@ -18,37 +18,13 @@ app.get("/pets", function(req, res){
     res.send(pets);
   });
 });
-// app.get("/pets/0", function(req, res){
-//   fs.readFile(petsPath, 'utf8', function(err, data) {
-//     var pets = JSON.parse(data);
-//     res.send(pets[0]);
-//   });
-// });
-// app.get("/pets/1", function(req, res){
-//   fs.readFile(petsPath, 'utf8', function(err, data) {
-//     var pets = JSON.parse(data);
-//     res.send(pets[1]);
-//   });
-// });
-//
-// app.get("/pets/2", function(req, res){
-//   fs.readFile(petsPath, 'utf8', function() {
-//     res.sendStatus(404);
-//   });
-// });
-//
-// app.get("/pets/-1", function(req, res){
-//   fs.readFile(petsPath, 'utf8', function() {
-//     res.sendStatus(404);
-//   });
-// });
 
 app.get("/pets/:index", function(req, res){
   var index = Number.parseInt(req.params.index);
   fs.readFile(petsPath, 'utf8', index, function(err, data) {
     var pets = JSON.parse(data);
     console.log(pets[index]);
-    if (index > pets.length || index < 0){
+    if (index > (pets.length -1) || index < 0){
        return res.sendStatus(404);
     }
     res.send(pets[index]);
